@@ -62,3 +62,17 @@ Simple To-Do List 프로젝트는 최종적으로 백엔드 API 연동을 위한
 - [ ] 일정 추가 API 연동
 - [ ] 일정 삭제 API 연동
 - [ ] 일정 완료 처리 API 연동
+
+## 📌 디렉토리 구조
+```
+simple-to-do-list/
+├── static/                     # 빌드되지 않는 정적 파일 (HTML, 이미지, 파비콘)
+│   ├── index.html              # 메인 페이지 (단일 페이지)
+│   └── assets/
+│       ├── images/             # 프로젝트 로고 및 기타 이미지 파일
+│       └── favicons/           # 파비콘 관련 파일
+│
+└── src/                        # 소스 코드 (CSS, JavaScript)
+    ├── css/                    # 모든 스타일 관련 파일
+    └── js/                     # 모든 JavaScript 로직
+```
