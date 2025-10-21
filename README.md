@@ -14,6 +14,11 @@
 | **핵심 정보** | 무엇을 할 것인지 | 언제 할 것인지 |
 | **시간 제약** | 날짜에만 구애받을 수 있음 | 날짜와 시간에 모두 구애받음 |
 
+### 🥅 핵심 개발 목표
+**CRUD 기능 일부 구현:​** 일정 추가(Create), 조회(Read), 삭제(Delete)의 기본 로직을 익히고 완성합니다.   
+**버전 관리 경험:** 깃허브를 이용하여 프로젝트 버전을 관리하는 방법을 배웁니다.   
+**반응형 웹 디자인:** 모바일과 PC 환경 모두에서 깔끔하게 작동하는 UI/UX를 구현합니다.   
+
 ## 🖼️ Design
 Simple To-Do List 서비스의 디자인은 Figma를 통해서 진행했으며, 상세한 디자인 정보는 [Figma](https://www.figma.com/design/gjvI7c86djUA8cgDnukgwu/%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%9B%90%ED%8E%98%EC%9D%B4%EC%A7%80-?node-id=0-1&p=f&t=J5WyC0INtw0Hwe5A-0)를 참고 해주세요.
 
