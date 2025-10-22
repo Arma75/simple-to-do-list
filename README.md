@@ -42,7 +42,7 @@ Simple To-Do List 서비스의 디자인은 Figma를 통해서 진행했으며, 
 | **Tool** | Figma, Git, GitHub, Chrome, Visual Studio Code |
 
 ## 🗺️ 로드맵 (Roadmap)
-Simple To-Do List 프로젝트는 최종적으로 백엔드 API 연동을 위한 FE 구조를 완성하는 것을 목표로 합니다.
+Simple To-Do List 프로젝트는 최종적으로 백엔드 API 연동을 위한 FE 구조를 완성하고 netlifya 서비스를 이용해 호스팅하는 것을 목표로 합니다.
 
 | 버전 | 목표 | 상태 |
 | :--- | :--- | :--- |
