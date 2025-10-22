@@ -1,5 +1,7 @@
 <img width="200" height="200" alt="오뎅꼬치" src="https://github.com/user-attachments/assets/a0d4ffb9-b47b-4d5d-ba7a-e252a801ec6f" />
 
+> 오뎅의 생각하는 사람
+
 # 📋 Simple To-Do List (간단 투두리스트)
 
 ## 🌟 레포지토리 소개
@@ -51,6 +53,7 @@ Simple To-Do List 프로젝트는 최종적으로 백엔드 API 연동을 위한
 ### 🛠️ v0.1.0 작업 목록
 - [ ] 메인 페이지 구조 작성
 - [ ] 메인 페이지 스타일링
+- [ ] 메인 페이지 메타 정보 작성
 
 ### 🛠️ v0.2.0 작업 목록
 - [ ] 여러 상황에 따른 Mock 데이터 생성
