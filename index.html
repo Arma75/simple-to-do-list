@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>🍢투두리스트</title>
+
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>투두리스트</title>
+        <meta property="og:title" content="간단한 투두리스트" />
+        <meta property="og:description" content="무엇을 할 것인가에 집중하는 간단한 투두리스트입니다." />
+        <meta property="og:image" content="./assets/images/오뎅의_생각하는_사람.png" />
+        <meta property="og:url" content="" />
+
+        <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon.ico">    
+        <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicons/apple-touch-icon.png">
     </head>
 
     <body>
         <main>
             <section>
-                <form>
+                <form aria-label="새 일정 추가 폼">
                     <input type="text" placeholder="새로운 일정을 추가하세요"/>
                     <button type="submit">추가</button>
                 </form>
@@ -23,7 +33,7 @@
                         <input type="checkbox" id="todo-1"/>
                         <label for="todo-1">일정입니다.</label>
                     </div>
-                    <button type="button">삭제</button>
+                    <button type="button" aria-label="첫번째 일정 삭제">삭제</button>
                 </article>
 
                 <article role="listitem">
@@ -31,7 +41,7 @@
                         <input type="checkbox" id="todo-2"/>
                         <label for="todo-2">일정입니다.</label>
                     </div>
-                    <button type="button">삭제</button>
+                    <button type="button" aria-label="두번째 일정 삭제">삭제</button>
                 </article>
             </section>
         </main>
