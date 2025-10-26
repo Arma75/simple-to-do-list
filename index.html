@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
     <head>
         <title>🍢투두리스트</title>
 
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta property="og:title" content="간단한 투두리스트" />
-        <meta property="og:description" content="무엇을 할 것인가에 집중하는 간단한 투두리스트입니다." />
-        <meta property="og:image" content="./assets/images/오뎅의_생각하는_사람.png" />
-        <meta property="og:url" content="" />
+        <!-- Meta Tags -->
+        <meta charset="UTF-8"/> <!-- 문자 인코딩 설정 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- 반응형 웹 설정 -->
+        <meta name="robots" content="index, follow"/> <!-- 검색 엔진 크롤링 설정 -->
+        <meta name="theme-color" content="#E1EAE2"/> <!-- 브라우저 툴바 색상 설정 -->
+        <meta name="description" content="무엇을 할 것인가에 집중하는 간단한 투두리스트입니다." /> <!-- 설명 설정 -->
+        <meta name="keywords" content="투두리스트, todo list, 일정관리, 할일관리"/> <!-- 키워드 설정 -->
+        <meta name="author" content="leader"/> <!-- 작성자 설정 -->
 
+        <!-- Open Graph Meta Tags(SNS 공유) -->
+        <meta property="og:type" content="website" /> <!-- 타입 설정 -->
+        <meta property="og:title" content="간단한 투두리스트" /> <!-- 제목 설정 -->
+        <meta property="og:description" content="무엇을 할 것인가에 집중하는 간단한 투두리스트입니다." /> <!-- 설명 설정 -->
+        <meta property="og:image" content="./assets/images/오뎅의_생각하는_사람.png" /> <!-- 이미지 설정 -->
+        <meta property="og:url" content="" /> <!-- URL 설정 -->
+
+        <!-- Favicon Links -->
         <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon.ico">    
         <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
         <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
@@ -27,22 +37,28 @@
 
             <hr>
 
-            <section role="list">
-                <article role="listitem">
-                    <div>
-                        <input type="checkbox" id="todo-1"/>
-                        <label for="todo-1">일정입니다.</label>
-                    </div>
-                    <button type="button" aria-label="첫번째 일정 삭제">삭제</button>
-                </article>
+            <section>
+                <ul aria-label="일정 목록">
+                    <li>
+                        <article>
+                            <div>
+                                <input type="checkbox" id="todo-1"/>
+                                <label for="todo-1">일정입니다.</label>
+                            </div>
+                            <button type="button" aria-label="첫번째 일정 삭제">삭제</button>
+                        </article>
+                    </li>
 
-                <article role="listitem">
-                    <div>
-                        <input type="checkbox" id="todo-2"/>
-                        <label for="todo-2">일정입니다.</label>
-                    </div>
-                    <button type="button" aria-label="두번째 일정 삭제">삭제</button>
-                </article>
+                    <li>
+                        <article>
+                            <div>
+                                <input type="checkbox" id="todo-2"/>
+                                <label for="todo-2">일정입니다.</label>
+                            </div>
+                            <button type="button" aria-label="두번째 일정 삭제">삭제</button>
+                        </article>
+                    </li>
+                </ul>
             </section>
         </main>
     </body>

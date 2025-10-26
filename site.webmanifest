@@ -1,0 +1,19 @@
+{
+    "name": "🍢투두리스트",
+    "short_name": "투두리스트",
+    "icons": [
+        {
+            "src": "./assets/favicons/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/favicons/android-chrome-512x512.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ],
+    "theme_color": "#E1EAE2",
+    "background_color": "#E1EAE2",
+    "display": "standalone"
+}
