@@ -70,12 +70,20 @@ Simple To-Do List 프로젝트는 최종적으로 백엔드 API 연동을 위한
 ## 📌 디렉토리 구조
 ```
 simple-to-do-list/
-├── README.md                   # 프로젝트 설명
-├── index.html                  # 메인 페이지 (단일 페이지)
-├── assets/                     # 빌드되지 않는 정적 파일 (이미지, 파비콘)
-│   ├── images/                 # 프로젝트 로고 및 기타 이미지 파일
-│   └── favicons/               # 파비콘 관련 파일
-└── src/                        # 소스 코드 (CSS, JavaScript)
-    ├── css/                    # 모든 스타일 관련 파일
-    └── js/                     # 모든 JavaScript 로직
+├── README.md                          # 프로젝트 설명
+├── index.html                         # 메인 페이지 (단일 페이지)
+├── site.webmanifest                   # PWA 설정 파일 (루트 경로에 배치)
+├── assets/                            # 빌드되지 않는 정적 파일 (이미지, 파비콘)
+│   ├── images/                        # 프로젝트 로고 및 기타 이미지 파일
+│   │   └── 오뎅의_생각하는_사람.png        # og:image용 이미지 파일
+│   └── favicons/                      # 파비콘 관련 파일
+│       ├── android-chrome-192x192.png # [안드로이드/PWA 아이콘]: Android 환경 및 PWA 설치 시 사용되는 표준 크기 아이콘 (192x192px)입니다.
+│       ├── android-chrome-512x512.jpg # [안드로이드/PWA 고해상도 아이콘]: Android 및 PWA 고해상도 환경에서 사용되는 최대 크기 아이콘 (512x512px)입니다.
+│       ├── apple-touch-icon.png       # [iOS 홈 화면 아이콘]: iPhone, iPad 등 Apple 기기에서 웹사이트를 홈 화면에 추가할 때 사용되는 아이콘입니다.
+│       ├── favicon-16x16.png          # [브라우저 탭 소형 PNG]: 브라우저 탭에 표시되는 가장 작은 크기의 아이콘 (16x16px)입니다.
+│       ├── favicon-32x32.png          # [브라우저 탭 표준 PNG]: 브라우저 탭에 표시되는 표준 크기의 아이콘 (32x32px)입니다.
+│       └── favicon.ico                # [하위 호환성 아이콘]: 구형 브라우저 및 특정 환경 지원을 위한 다중 크기 포함의 기본 Favicon 파일입니다.
+└── src/                               # 소스 코드 (CSS, JavaScript)
+    ├── css/                           # 모든 스타일 관련 파일
+    └── js/                            # 모든 JavaScript 로직
 ```
