@@ -24,12 +24,127 @@
         <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
         <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
         <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicons/apple-touch-icon.png">
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                font-size: 16px;
+            }
+            main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            section {
+                width: 100%;
+                max-width: 1280px;
+                padding: 2rem;
+            }
+
+            hr {
+                width: 100%;
+                max-width: 120px;
+                height: 8px;
+                background-color: #F4F4F5;
+                border-radius: 999em;
+                border: none;
+            }
+
+            input[type="text"] {
+                font-size: 1rem;
+                padding: 0 1.5rem;
+                height: 4rem;
+                border-radius: 1rem;
+                border: 1px solid #F4F4F5;
+                min-width: 0;
+            }
+            input[type="text"]::placeholder {
+                color: #A0A0A9;
+            }
+            button {
+                font-size: 1rem;
+                padding: 0 1.5rem;
+                height: 4rem;
+                border-radius: 1rem;
+            }
+            button[type="submit"] {
+                border: 1px solid #1A9E6A;
+                background-color: #22C784;
+                color: white;
+            }
+
+            .add-todo-form {
+                display: flex;
+                gap: 1rem;
+            }
+            .add-todo-form input[type="text"] {
+                flex-grow: 1;
+            }
+
+            .todo-list-section ul {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .todo-list-section li {
+                list-style: none;
+            }
+            .todo-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                border: 1px solid #F4F4F5;
+                border-radius: 1rem;
+            }
+
+            .checkbox-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                
+                display: inline-block;
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-right: 0.5rem;
+                vertical-align: middle;
+                cursor: pointer;
+                
+                border: 1px solid #F4F4F5;
+                border-radius: 0.5rem;
+            }
+            input[type="checkbox"]:checked {
+                border: 1px solid #1A9E6A;
+                background-color: #22C784;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 12.75l6 6 9-13.5' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                background-size: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .todo-item button {
+                border: 1px solid #F87171;
+                background-color: #F87171;
+                color: white;
+                cursor: pointer;
+            }
+        </style>
     </head>
 
     <body>
         <main>
-            <section>
-                <form aria-label="새 일정 추가 폼">
+            <section class="add-todo-section">
+                <form aria-label="새 일정 추가 폼" class="add-todo-form">
                     <input type="text" placeholder="새로운 일정을 추가하세요"/>
                     <button type="submit">추가</button>
                 </form>
@@ -37,11 +152,11 @@
 
             <hr>
 
-            <section>
+            <section class="todo-list-section">
                 <ul aria-label="일정 목록">
                     <li>
-                        <article>
-                            <div>
+                        <article class="todo-item">
+                            <div class="checkbox-wrapper">
                                 <input type="checkbox" id="todo-1"/>
                                 <label for="todo-1">일정입니다.</label>
                             </div>
@@ -50,8 +165,8 @@
                     </li>
 
                     <li>
-                        <article>
-                            <div>
+                        <article class="todo-item completed">
+                            <div class="checkbox-wrapper">
                                 <input type="checkbox" id="todo-2"/>
                                 <label for="todo-2">일정입니다.</label>
                             </div>
