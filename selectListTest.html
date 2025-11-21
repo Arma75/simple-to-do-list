@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>🍢일정 목록 조회</title>
+    </head>
+
+    <body>
+        <main>
+            <section class="add-todo-section">
+                <form aria-label="새 일정 추가 폼" id="addTodoForm">
+                    <input type="text" placeholder="새로운 일정을 추가하세요" name="todo-item-title"/>
+                    <button type="submit">추가</button>
+                </form>
+            </section>
+
+            <hr>
+
+            <section id="todoListSection" class="todo-list-section">
+            </section>
+        </main>
+
+        <script>
+            /* 테스트 데이터 : '[{"title": "빨래 돌리기", "isCompleted": true}, {"title": "단어 외우기", "isCompleted": false}]' */
+
+            // 로컬 스토리지에서 JSON 형식으로 저장되어 있는 일정 목록 데이터를 가져와서 (todoListJson) 변수에 담는다.( 로컬 스토리지 키 : "TODO_LIST_JSON")
+
+            // (todoListJson) 변수 값이 null이거나 undefined거나 빈 값이라면 (todoListJson) 변수에 빈 배열 문자열("[]")을 담는다.
+
+            // (todoListJson) 변수 값을 자바스크립트 데이터로 변환하여 (todoList) 변수에 담는다.
+
+            // (todoList) 값을 반환한다.
+
+            function selectTodoList() {
+                // 로컬 스토리지에서 JSON 형식으로 저장되어 있는 일정 목록 데이터를 가져와서 (todoListJson) 변수에 담는다.( 로컬 스토리지 키 : "TODO_LIST_JSON")
+                let todoListJson = localStorage.getItem("TODO_LIST_JSON");
+                
+                // (todoListJson) 변수 값이 null이거나 undefined거나 빈 값이라면 (todoListJson) 변수에 빈 배열 문자열("[]")을 담는다.
+                if (todoListJson == null || todoListJson == undefined || todoListJson == "") {
+                    todoListJson = "[]";
+                }
+
+                // (todoListJson) 변수 값을 자바스크립트 데이터로 변환하여 (todoList) 변수에 담는다.
+                let todoList = JSON.parse(todoListJson);
+
+                // (todoList) 값을 반환한다.
+                return todoList;
+            }
+
+            todoListSection.innerText = JSON.stringify(selectTodoList());
+        </script>
+    </body>
+</html>
