@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>🍢일정 추가</title>
+
+        <style>
+            .todo-item {
+                background-color: #fdfdfd;
+            }
+            .todo-item.completed {
+                background-color: #d2ffd2;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <section class="add-todo-section">
+                <form aria-label="새 일정 추가 폼" id="addTodoForm">
+                    <input type="text" placeholder="새로운 일정을 추가하세요" id="todoInput"/>
+                    <button type="submit">추가</button>
+                </form>
+            </section>
+
+            <hr>
+
+            <section id="todoListSection" class="todo-list-section">
+            </section>
+        </main>
+
+        <script>
+            function insertTodoItem() {
+                // 변수(todoInputEl)를 생성하고, 사용자가 일정 제목을 입력하는 input 요소를 가져와서 (todoInputEl) 변수에 담는다.
+                let todoInputEl = document.getElementById("todoInput");
+
+                // (todoInputEl) 요소의 값을 담은 변수(todoTitle)를 생성한다.
+                let todoTitle = todoInputEl.value;
+
+                // (todoTitle) 값이 빈 값인 경우 "일정 제목을 입력하세요."라는 경고 메세지를 표시하고 함수를 종료한다.
+                if (todoTitle == "") {
+                    alert("일정 제목을 입력하세요.");
+                    return;
+                }
+
+                // 객체 변수(newTodoItem)를 생성하고, (newTodoItem) 객체에 id 멤버를 현재 시간 값으로 세팅한다.
+                let newTodoItem = {};
+                newTodoItem.id = new Date().getTime();
+
+                // (newTodoItem) 객체의 title 멤버 값을 (todoTitle) 값으로 세팅한다.
+                newTodoItem.title = todoTitle;
+
+                // (newTodoItem) 객체에 isCompleted 멤버를 false로 세팅한다.
+                newTodoItem.isCompleted = false;
+
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoList) 배열에 (newTodoItem) 객체를 추가한다.
+                todoList.push(newTodoItem);
+
+                // (todoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                todoList = JSON.stringify(todoList);
+                localStorage.setItem("TODO_LIST_JSON", todoList);
+
+                // (todoInputEl) 요소의 값을 빈 문자열로 초기화한다.
+                todoInputEl.value = "";
+            }
+
+            function selectTodoList() {
+                // 로컬 스토리지에서 JSON 형식으로 저장되어 있는 일정 목록 데이터를 가져와서 (todoListJson) 변수에 담는다.( 로컬 스토리지 키 : "TODO_LIST_JSON")
+                let todoListJson = localStorage.getItem("TODO_LIST_JSON");
+                
+                // (todoListJson) 변수 값이 null이거나 undefined거나 빈 값이라면 (todoListJson) 변수에 빈 배열 문자열("[]")을 담는다.
+                if (todoListJson == null || todoListJson == undefined || todoListJson == "") {
+                    todoListJson = "[]";
+                }
+
+                // (todoListJson) 변수 값을 자바스크립트 데이터로 변환하여 (todoList) 변수에 담는다.
+                let todoList = JSON.parse(todoListJson);
+
+                // (todoList) 값을 반환한다.
+                return todoList;
+            }
+        </script>
+    </body>
+</html>
