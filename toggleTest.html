@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>🍢일정 완료여부 변경</title>
+
+        <style>
+            .todo-item {
+                background-color: #fdfdfd;
+            }
+            .todo-item.completed {
+                background-color: #d2ffd2;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <section class="add-todo-section">
+                <form aria-label="새 일정 추가 폼" id="addTodoForm">
+                    <input type="text" placeholder="새로운 일정을 추가하세요" name="todo-item-title"/>
+                    <button type="submit">추가</button>
+                </form>
+            </section>
+
+            <hr>
+
+            <section id="todoListSection" class="todo-list-section">
+            </section>
+        </main>
+
+        <script>
+            renderTodoList();
+            bindTest();
+            
+            function bindTest() {
+                let todoItemArticleList = document.getElementsByClassName("todo-item");
+                for (let i = 0; i < todoItemArticleList.length; i++) {
+                    let todoInput = todoItemArticleList[i].getElementsByTagName("input")[0];
+                    todoInput.onchange = function() {
+                        toggleTodoComplete(todoInput.id);
+                        renderTodoList();
+                        bindTest();
+                    };
+                }
+            }
+
+            function toggleTodoComplete(targetId) {
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoList)의 일정 데이터 중에서 id 값이 파라미터로 전달받은 (targetId)와 동일한 데이터를 필터링한 결과값 중 첫번째 값을 (targetTodoItem) 변수에 담는다.
+                let targetTodoItem = todoList.filter(function(todoItem) {
+                    return todoItem.id == targetId;
+                })[0];
+
+                // (targetTodoItem) 객체의 isCompleted 값이 true였다면 false로, false였다면 true로 변경한다.
+                if (targetTodoItem.isCompleted) {
+                    targetTodoItem.isCompleted = false;
+                } else {
+                    targetTodoItem.isCompleted = true;
+                }
+
+                // (todoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                todoList = JSON.stringify(todoList);
+                localStorage.setItem("TODO_LIST_JSON", todoList);
+            }
+
+            function selectTodoList() {
+                // 로컬 스토리지에서 JSON 형식으로 저장되어 있는 일정 목록 데이터를 가져와서 (todoListJson) 변수에 담는다.( 로컬 스토리지 키 : "TODO_LIST_JSON")
+                let todoListJson = localStorage.getItem("TODO_LIST_JSON");
+                
+                // (todoListJson) 변수 값이 null이거나 undefined거나 빈 값이라면 (todoListJson) 변수에 빈 배열 문자열("[]")을 담는다.
+                if (todoListJson == null || todoListJson == undefined || todoListJson == "") {
+                    todoListJson = "[]";
+                }
+
+                // (todoListJson) 변수 값을 자바스크립트 데이터로 변환하여 (todoList) 변수에 담는다.
+                let todoList = JSON.parse(todoListJson);
+
+                // (todoList) 값을 반환한다.
+                return todoList;
+            }
+
+            // 파라미터로 전달받은 일정 목록을 화면에 UI로 표시하는 함수
+            function renderTodoList() {
+                // 일정 목록을 표시할 요소(#todoListSection)를 가져와서 (todoListSection) 변수에 담는다.
+                let todoListSection = document.getElementById("todoListSection");
+
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoListSection) 요소의 자식 요소들을 모두 삭제한다.
+                todoListSection.innerHTML = "";
+
+                // (todoList) 데이터를 순회한다. 이때, 인덱스 변수 (i)를 생성하여 순회한다.
+                for (let i = 0;i < todoList.length; i++) {
+                    // (todoList) 데이터 중 (i)번째 일정 데이터를 (todoItem) 변수에 담는다.
+                    let todoItem = todoList[i];
+
+                    // (todoItem) 객체의 id 값을 (todoItemId) 변수에 담는다.
+                    let todoItemId = todoItem.id;
+
+                    // (todoItem) 객체의 title 값을 (todoItemTitle) 변수에 담는다.
+                    let todoItemTitle = todoItem.title;
+
+                    // (todoItem) 객체의 isCompleted 값을 (isTodoItemCompleted) 변수에 담는다.
+                    let isTodoItemCompleted = todoItem.isCompleted;
+
+                    // (todoItemTitle), (isTodoItemCompleted), (todoItemId) 변수들을 이용하여 (i)번째 일정 데이터를 화면에 그린다.
+                    todoListSection.innerHTML += `
+                        <article class="todo-item ${isTodoItemCompleted ? 'completed' : ''}">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="${todoItemId}" ${isTodoItemCompleted ? 'checked' : ''}/>
+                                <label for="${todoItemId}">${todoItemTitle}</label>
+                            </div>
+                            <button type="button" class="delete-btn">삭제</button>
+                        </article>
+                    `;
+                }
+            }
+        </script>
+    </body>
+</html>
