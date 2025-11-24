@@ -29,7 +29,7 @@
         </main>
 
         <script>
-            renderTodoList();
+            renderTodoList(selectTodoList());
             bindTest();
             
             function bindTest() {
@@ -38,20 +38,27 @@
                     let todoInput = todoItemArticleList[i].getElementsByTagName("input")[0];
                     todoInput.onchange = function() {
                         toggleTodoComplete(todoInput.id);
-                        renderTodoList();
+                        renderTodoList(selectTodoList());
                         bindTest();
                     };
                 }
             }
 
+            // targetId에 해당하는 일정의 완료 여부를 토글하는 함수
             function toggleTodoComplete(targetId) {
                 // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
                 let todoList = selectTodoList();
 
-                // (todoList)의 일정 데이터 중에서 id 값이 파라미터로 전달받은 (targetId)와 동일한 데이터를 필터링한 결과값 중 첫번째 값을 (targetTodoItem) 변수에 담는다.
+                // (todoList)의 일정 데이터 중에서 id 값이 함수 파라미터로 전달받은 (targetId)와 동일한 데이터를 필터링한 결과값 중 첫번째 값을 (targetTodoItem) 변수에 담는다.
                 let targetTodoItem = todoList.filter(function(todoItem) {
                     return todoItem.id == targetId;
                 })[0];
+
+                // (targetTodoItem)이 undefined라면 "해당 일정이 존재하지 않습니다." 메세지 표시 후 함수 종료
+                if (targetTodoItem == undefined) {
+                    alert("해당 일정이 존재하지 않습니다.");
+                    return;
+                }
 
                 // (targetTodoItem) 객체의 isCompleted 값이 true였다면 false로, false였다면 true로 변경한다.
                 if (targetTodoItem.isCompleted) {
