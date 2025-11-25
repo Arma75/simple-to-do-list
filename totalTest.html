@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>🍢일정 목록 조회</title>
+
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                font-size: 16px;
+            }
+            main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            section {
+                width: 100%;
+                max-width: 1280px;
+                padding: 2rem;
+            }
+
+            hr {
+                width: 100%;
+                max-width: 120px;
+                height: 8px;
+                background-color: #F4F4F5;
+                border-radius: 999em;
+                border: none;
+            }
+
+            input[type="text"] {
+                font-size: 1rem;
+                padding: 0 1.5rem;
+                height: 4rem;
+                border-radius: 1rem;
+                border: 1px solid #F4F4F5;
+                min-width: 0;
+            }
+            input[type="text"]::placeholder {
+                color: #A0A0A9;
+            }
+            button {
+                font-size: 1rem;
+                padding: 0 1.5rem;
+                height: 4rem;
+                border-radius: 1rem;
+            }
+            button[type="submit"] {
+                border: 1px solid #1A9E6A;
+                background-color: #22C784;
+                color: white;
+            }
+
+            #addTodoForm {
+                display: flex;
+                gap: 1rem;
+            }
+            #addTodoForm input[type="text"] {
+                flex-grow: 1;
+            }
+
+            .todo-list-section ul {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .todo-list-section li {
+                list-style: none;
+            }
+            .todo-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                border: 1px solid #F4F4F5;
+                border-radius: 1rem;
+            }
+            /* 완료된 항목 스타일 */
+            .todo-item.completed {
+                background-color: #F7FAF9; /* 연한 배경색 */
+                border-color: #1A9E6A;
+                opacity: 0.7;
+            }
+
+            .checkbox-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                
+                display: inline-block;
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-right: 0.5rem;
+                vertical-align: middle;
+                cursor: pointer;
+                
+                border: 1px solid #F4F4F5;
+                border-radius: 0.5rem;
+            }
+            input[type="checkbox"]:checked {
+                border: 1px solid #1A9E6A;
+                background-color: #22C784;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 12.75l6 6 9-13.5' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                background-size: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .todo-item button {
+                border: 1px solid #F87171;
+                background-color: #F87171;
+                color: white;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <section class="add-todo-section">
+                <form aria-label="새 일정 추가 폼" id="addTodoForm">
+                    <input type="text" placeholder="새로운 일정을 추가하세요" id="todoInput"/>
+                    <button type="submit">추가</button>
+                </form>
+            </section>
+
+            <hr>
+
+            <section class="todo-list-section">
+                <ul id="todoListUl">
+
+                </ul>
+            </section>
+        </main>
+
+        <script>
+            renderTodoList(selectTodoList());
+            bindSubmitEvent();
+            bindDynamicEvents();
+
+            function bindDynamicEvents() {
+                bindDeleteEvent();
+                bindToggleEvent();
+            }
+
+            function bindSubmitEvent() {
+                let addTodoForm = document.getElementById("addTodoForm");
+                addTodoForm.onsubmit = function(e) {
+                    e.preventDefault();
+
+                    // insertTodoItem 함수를 이용하여 새로운 일정을 추가한다.
+                    insertTodoItem();
+                    
+                    // 일정 목록을 다시 조회하고 화면에 렌더링한다.
+                    renderTodoList(selectTodoList());
+                    
+                    // 새로 렌더링된 요소들에 이벤트를 다시 바인딩한다.
+                    bindDynamicEvents();
+                };
+            }
+            
+            function bindDeleteEvent() {
+                // 화면에 있는 모든 삭제 버튼(.delete-btn) 요소들을 가져와서 (deleteButtons) 변수에 담는다.
+                let deleteButtons = document.querySelectorAll(".delete-btn");
+                // 일정 목록 섹션(#todoListUl) 내의 모든 인풋필드(input) 요소들을 가져와서 (checkboxes) 변수에 담는다.
+                let checkboxes = document.querySelectorAll("#todoListUl input");
+
+                // (deleteButtons) 배열을 순회한다.
+                for (let i = 0; i < deleteButtons.length; i++) {
+                    // (deleteButtons) 배열의 i번째 요소에 onclick 이벤트를 세팅한다.
+                    deleteButtons[i].onclick = function() {
+                        // (checkboxes) 배열의 i번째 요소에 있는 id 값을 가져와서 (todoItemId) 변수에 담는다.
+                        let todoItemId = checkboxes[i].id;
+                        
+                        // deleteTodoItem 함수를 이용하여 (todoItemId) 값을 아이디로 가진 일정을 삭제한다.
+                        deleteTodoItem(todoItemId);
+                        
+                        // 일정 목록을 다시 조회하고 화면에 렌더링한다.
+                        renderTodoList(selectTodoList());
+                        
+                        // 새로 렌더링된 요소들에 이벤트를 다시 바인딩한다.
+                        bindDynamicEvents();
+                    };
+                }
+            }
+
+            function bindToggleEvent() {
+                // 일정 목록 섹션(#todoListUl) 내의 모든 인풋필드(input) 요소들을 가져와서 (checkboxes) 변수에 담는다.
+                let checkboxes = document.querySelectorAll("#todoListUl input");
+
+                // (checkboxes) 배열을 순회한다.
+                for (let i = 0; i < checkboxes.length; i++) {
+                    // (checkboxes) 배열의 i번째 요소에 onchange 이벤트를 세팅한다.
+                    checkboxes[i].onchange = function() {
+                        // (checkboxes) 배열의 i번째 요소에 있는 id 값을 가져와서 (todoItemId) 변수에 담는다.
+                        let todoItemId = checkboxes[i].id;
+                        
+                        // toggleTodoComplete 함수를 이용하여 (todoItemId) 값을 아이디로 가진 일정의 완료여부를 변경한다.
+                        toggleTodoComplete(todoItemId);
+                        
+                        // 일정 목록을 다시 조회하고 화면에 렌더링한다.
+                        renderTodoList(selectTodoList());
+                        
+                        // 새로 렌더링된 요소들에 이벤트를 다시 바인딩한다.
+                        bindDynamicEvents();
+                    };
+                }
+            }
+
+            // targetId에 해당하는 일정의 완료 여부를 토글하는 함수
+            function deleteTodoItem(targetId) {
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoList) 배열을 순회하면서, id 값이 파라미터로 전달받은 (targetId)와 동일하지 않은 데이터들만 추출하여 (updatedTodoList) 변수에 담는다. (필터링을 통한 삭제 효과)
+                let updatedTodoList = todoList.filter(function(todoItem) {
+                    return todoItem.id != targetId;
+                });
+
+                // (updatedTodoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                updatedTodoList = JSON.stringify(updatedTodoList);
+                localStorage.setItem("TODO_LIST_JSON", updatedTodoList);
+            }
+
+            function selectTodoList() {
+                // 로컬 스토리지에서 JSON 형식으로 저장되어 있는 일정 목록 데이터를 가져와서 (todoListJson) 변수에 담는다.( 로컬 스토리지 키 : "TODO_LIST_JSON")
+                let todoListJson = localStorage.getItem("TODO_LIST_JSON");
+                
+                // (todoListJson) 변수 값이 null이거나 undefined거나 빈 값이라면 (todoListJson) 변수에 빈 배열 문자열("[]")을 담는다.
+                if (todoListJson == null || todoListJson == undefined || todoListJson == "") {
+                    todoListJson = "[]";
+                }
+
+                // (todoListJson) 변수 값을 자바스크립트 데이터로 변환하여 (todoList) 변수에 담는다.
+                let todoList = JSON.parse(todoListJson);
+
+                // (todoList) 값을 반환한다.
+                return todoList;
+            }
+
+            // 파라미터로 전달받은 일정 목록을 화면에 UI로 표시하는 함수
+            function renderTodoList(todoList) {
+                // 일정 목록을 표시할 요소(#todoListUl)를 가져와서 (todoListUl) 변수에 담는다.
+                let todoListUl = document.getElementById("todoListUl");
+
+                // (todoListUl) 요소의 자식 요소들을 모두 삭제한다.
+                todoListUl.innerHTML = "";
+
+                // 파라미터로 받은 (todoList) 데이터를 순회한다. 이때, 인덱스 변수 (i)를 생성하여 순회한다.
+                for (let i = 0;i < todoList.length; i++) {
+                    // (todoList) 데이터 중 (i)번째 일정 데이터를 (todoItem) 변수에 담는다.
+                    let todoItem = todoList[i];
+
+                    // (todoItem) 객체의 id 값을 (todoItemId) 변수에 담는다.
+                    let todoItemId = todoItem.id;
+
+                    // (todoItem) 객체의 title 값을 (todoItemTitle) 변수에 담는다.
+                    let todoItemTitle = todoItem.title;
+
+                    // (todoItem) 객체의 isCompleted 값을 (isTodoItemCompleted) 변수에 담는다.
+                    let isTodoItemCompleted = todoItem.isCompleted;
+
+                    // (todoItemTitle), (isTodoItemCompleted), (todoItemId) 변수들을 이용하여 (i)번째 일정 데이터를 화면에 그린다.
+                    todoListUl.innerHTML += `
+                        <li>
+                            <article class="todo-item ${isTodoItemCompleted ? 'completed' : ''}">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="${todoItemId}" ${isTodoItemCompleted ? 'checked' : ''}/>
+                                    <label for="${todoItemId}">${todoItemTitle}</label>
+                                </div>
+                                <button type="button" class="delete-btn">삭제</button>
+                            </article>
+                        </li>
+                    `;
+                }
+            }
+
+            function insertTodoItem() {
+                // 변수(todoInputEl)를 생성하고, 사용자가 일정 제목을 입력하는 input 요소를 가져와서 (todoInputEl) 변수에 담는다.
+                let todoInputEl = document.getElementById("todoInput");
+
+                // (todoInputEl) 요소의 값을 담은 변수(todoTitle)를 생성한다.
+                let todoTitle = todoInputEl.value;
+
+                // (todoTitle) 값이 빈 값인 경우 "일정 제목을 입력하세요."라는 경고 메세지를 표시하고 함수를 종료한다.
+                if (todoTitle == "") {
+                    alert("일정 제목을 입력하세요.");
+                    return;
+                }
+
+                // 객체 변수(newTodoItem)를 생성하고, (newTodoItem) 객체에 id 멤버를 현재 시간 값으로 세팅한다.
+                let newTodoItem = {};
+                newTodoItem.id = new Date().getTime();
+
+                // (newTodoItem) 객체의 title 멤버 값을 (todoTitle) 값으로 세팅한다.
+                newTodoItem.title = todoTitle;
+
+                // (newTodoItem) 객체에 isCompleted 멤버를 false로 세팅한다.
+                newTodoItem.isCompleted = false;
+
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoList) 배열에 (newTodoItem) 객체를 추가한다.
+                todoList.push(newTodoItem);
+
+                // (todoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                todoList = JSON.stringify(todoList);
+                localStorage.setItem("TODO_LIST_JSON", todoList);
+
+                // (todoInputEl) 요소의 값을 빈 문자열로 초기화한다.
+                todoInputEl.value = "";
+            }
+
+            // targetId에 해당하는 일정의 완료 여부를 토글하는 함수
+            function toggleTodoComplete(targetId) {
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                let todoList = selectTodoList();
+
+                // (todoList)의 일정 데이터 중에서 id 값이 함수 파라미터로 전달받은 (targetId)와 동일한 데이터를 필터링한 결과값 중 첫번째 값을 (targetTodoItem) 변수에 담는다.
+                let targetTodoItem = todoList.filter(function(todoItem) {
+                    return todoItem.id == targetId;
+                })[0];
+
+                // (targetTodoItem)이 undefined라면 "해당 일정이 존재하지 않습니다." 메세지 표시 후 함수 종료
+                if (targetTodoItem == undefined) {
+                    alert("해당 일정이 존재하지 않습니다.");
+                    return;
+                }
+
+                // (targetTodoItem) 객체의 isCompleted 값이 true였다면 false로, false였다면 true로 변경한다.
+                if (targetTodoItem.isCompleted) {
+                    targetTodoItem.isCompleted = false;
+                } else {
+                    targetTodoItem.isCompleted = true;
+                }
+
+                // (todoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                todoList = JSON.stringify(todoList);
+                localStorage.setItem("TODO_LIST_JSON", todoList);
+            }
+        </script>
+    </body>
+</html>
