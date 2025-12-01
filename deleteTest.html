@@ -30,20 +30,37 @@
 
         <script>
             renderTodoList(selectTodoList());
+            bindEvents();
+
+            function bindEvents() {
+                // 
+                let todoItemList = document.getElementsByClassName("todo-item");
+                for (let i = 0; i < todoItemList.length; i++) {
+                    let deleteBtn = todoItemList[i].getElementsByClassName("delete-btn")[0];
+                    let todoInput = todoItemList[i].getElementsByTagName("input")[0];
+                    deleteBtn.onclick = function() {
+                        deleteTodoItem(todoInput.id);
+                        renderTodoList(selectTodoList());
+                        bindEvents();
+                    };
+                }
+            }
 
             // targetId에 해당하는 일정의 완료 여부를 토글하는 함수
             function deleteTodoItem(targetId) {
-                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 저장되어 있는 일정 목록을 담는다.
+                // 배열 변수(todoList)를 생성하고, selectTodoList 함수를 이용해서 (todoList)에 현재 시스템에 저장되어 있는 일정 목록을 담는다.
                 let todoList = selectTodoList();
 
-                // (todoList) 배열을 순회하면서, id 값이 파라미터로 전달받은 (targetId)와 동일하지 않은 데이터들만 추출하여 (updatedTodoList) 변수에 담는다. (필터링을 통한 삭제 효과)
-                let updatedTodoList = todoList.filter(function(todoItem) {
+                // (todoList) 배열을 순회하면서, 일정 아이템의 id 값이 파라미터로 전달받은 (targetId)와 동일하지 않은 데이터들만 추출하여 (undeletedTodoList) 변수에 담는다. (필터링을 통한 삭제 효과)
+                let undeletedTodoList = todoList.filter(function(todoItem) {
                     return todoItem.id != targetId;
                 });
 
-                // (updatedTodoList) 배열을 JSON 문자열 형식으로 변경한 뒤 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
-                updatedTodoList = JSON.stringify(updatedTodoList);
-                localStorage.setItem("TODO_LIST_JSON", updatedTodoList);
+                // (undeletedTodoList) 배열을 JSON 문자열 형식으로 변경한다.
+                undeletedTodoList = JSON.stringify(undeletedTodoList);
+
+                // (undeletedTodoList) 변수 값을 로컬스토리지에 저장한다.(이때, 로컬스토리지 키 값은 "TODO_LIST_JSON"로 사용한다)
+                localStorage.setItem("TODO_LIST_JSON", undeletedTodoList);
             }
 
             function selectTodoList() {
